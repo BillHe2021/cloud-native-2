@@ -1,0 +1,36 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: simplehttp
+spec:
+  containers:
+    - name: simplehttp
+      image: billhe2021/httpserver:latest
+      volumeMounts:
+        - name: foo
+          mountPath: "/etc/foo"
+          readOnly: true
+      resources:
+        limits:
+          cpu: "1"
+        requests:
+          cpu: "0.5"
+      ports:
+        - containerPort: 9090
+      readinessProbe:
+        httpGet:
+          path: /healthz
+          port: 8080
+          scheme: HTTP
+        initialDelaySeconds: 5
+        periodSeconds: 3
+      startupProbe:
+        httpGet:
+          path: /healthz
+          port: 8080
+        failureThreshold: 30
+        periodSeconds: 10
+  volumes:
+    - name: foo
+      configMap:
+        name: game-config

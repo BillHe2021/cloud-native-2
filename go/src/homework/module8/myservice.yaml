@@ -1,0 +1,9 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: my-service
+  namespace: test
+spec:
+  type: ExternalName
+  externalName: thrill.bill.hk
+
